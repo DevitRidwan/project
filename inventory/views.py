@@ -13,11 +13,11 @@ from django.views.decorators.http import require_POST
 from .forms import InvoiceForm, LineItemForm, LineItemFormset
 from .models import Client, Company, Invoice, LineItem
 
-@login_required
+#@login_required
 def view_invoice(request, id):
 	invoices = Invoice.objects.select_related()
 	invoice = get_object_or_404(invoices, invoice_number=id)
-	stylesheet = invoice.company.stylesheets.all()[0]
+	stylesheet = invoice.company.stylesheet.all()[0]
 	formset = LineItemFormset(instance=invoice)
 	context = {
 	'invoice':invoice,
@@ -110,3 +110,8 @@ def company_overview(request, id):
 	company = get_object_or_404(Company.objects.select_related(), id=id)
 	context = {'client':company}
 	return render(request, 'company.html', context)
+
+def index(request):
+	invoice = Invoice.objects.order_by('-due_date')
+	context = {'invoice':invoice}
+	return render(request, 'index.html', context)

@@ -1,0 +1,9 @@
+{%if invoice%}
+	<ul>
+		{%for invoice in invoice%}
+			<li><a href="{%url 'invoice' invoice.invoice_number%}">{{invoice.invoice_number}}</a></li>
+		{%endfor%}
+	</ul>
+{%else%}
+	<p>No Invoice</p>
+{%endif%}

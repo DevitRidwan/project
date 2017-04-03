@@ -13,11 +13,17 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url
 from django.contrib import admin
 from django.conf.urls import url, include
+from django.conf import settings
+admin.autodiscover()
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-   url(r'', include('inventory.urls', namespace='inventory', app_name='inventory'))
+	url(r'^admin/', admin.site.urls),
+	url(r'^inventory/', include('inventory.urls')),
 ]
+"""    url(r'^admin/', admin.site.urls),
+   	#url(r'^', include('inventory.urls', namespace='inventory', app_name='inventory')),
+#   	(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root' : settings.MEDIA_ROOT}),
+   	url(r'^', include('inventory.urls')), 
+   	url(r'^inventory/', include('inventory.urls')),"""

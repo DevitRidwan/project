@@ -38,7 +38,7 @@ class Client(Entity):
 		return ('client', (), {'id':self.id})
 
 	def receipts_to_date(self):
-		items = LineItem.objects.filter(invoice__client=self).only("price", "quantity", "taxable", "invoice", "invoice__company__tax__rate").select_related("invoice__company")
+		items = LineItem.objects.filter(invoice__client=self).only("price", "quantity", "taxable", "invoice", "invoice__company__tax_rate").select_related("invoice__company")
 		total = 0
 		for item in items:
 			total += item.total()
@@ -86,7 +86,7 @@ class AbstractItem(models.Model):
 class LineItem(AbstractItem):
 	item = models.ForeignKey("Item", blank=True, null=True)
 	quantity = models.DecimalField(max_digits=7, decimal_places=2)
-	invoice = models.ForeignKey("Invoice", related_name="line_item", editable=False)
+	invoice = models.ForeignKey("Invoice", related_name="line_items", editable=False)
 
 	class Meta:
 		verbose_name = "Line Item"
@@ -171,7 +171,8 @@ def stylesheet_upload(instance, filename):
 	file, ext = os.path.splitext(filename)
 	file_slug = '%s%s' %(slugify(file), ext)
 	company_id = unicode(instance.company.id)
-	upload_dir = settings.get("INVENTORY_UPLOAD_DIR", "inventory").strip("/")
+	#upload_dir = settings.get("INVENTORY_UPLOAD_DIR", "inventory").strip("/")
+	upload_dir = getattr(settings, "INVENTORY_UPLOAD_DIR", "inventory").strip("/")
 	return os.path.join(upload_dir, "stylesheets", company_id, file_slug)
 
 class Stylesheet(models.Model):

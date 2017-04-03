@@ -1,4 +1,4 @@
-{%extend "base.html%}
+{%extends "base.html"%}
 {%block title%}Invoice #{{invoice.invoice_number}}{%endblock%}
 {%block stylesheet%}
 	{{block.super}}
@@ -75,7 +75,7 @@
 					//tambah formset field yang diperlukan
 					data["{{formset.management_form.TOTAL_FORMS.html_name}}"] = jQuery("#id_{{formset.management_form.TOTAL_FORMS.html_name}}").attr("vaule");
 					data["{{formset.management_form.INITIAL_FORMS.html_name}}"] = jQuery("#id_{{formset.management_form.INITIAL_FORMS.html_name}}").attr("value");
-					var url = "{%url inventory:edti_invoice invoice.invoice_number%}";
+					var url = "{%url 'edit_invoice' invoice.invoice_number%}";
 
 					//submit data
 					var val = jQuery.ajax({
@@ -200,7 +200,7 @@
 				},
 				onBeforeLoad: function(){
 					var container = this.getContent().find("table.container");
-					container.load("{%url inventory:add_line invoice.invoice_number%}");
+					container.load("{%url 'add_line' invoice.invoice_number%}");
 				}
 			});
 			jQuery("confirm-delete button.confirm").click(function(){
@@ -344,7 +344,7 @@
 		</p>
 	</div>
 	<div id="add-modal" class="dialog">
-		<form id="add-form" method="POST" action="{%url add_line invoice.invoice_number%}">
+		<form id="add-form" method="POST" action="{%url 'add_line' invoice.invoice_number%}">
 			<input type="hidden" name="invoice" value="{{invoice.id}}"/>
 			<h2>Add Row</h2>
 			<table class="container"></table>
